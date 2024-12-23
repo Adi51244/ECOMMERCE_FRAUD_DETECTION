@@ -11,11 +11,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Load the model
-MODEL_PATH = "F:\\vercal\\Ecommerce\\backend\\fraud_detection_model.pth"
-
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "fraud_detection_model.pth")
 # Verify model file exists
 if not os.path.exists(MODEL_PATH):
     logger.error(f"Model file not found at: {MODEL_PATH}")
+    logger.info("Please ensure the model file is placed in the same directory as this script")
 
 class FraudDetectionModel(nn.Module):
     def __init__(self, input_size):
@@ -124,16 +124,21 @@ try:
     input_size = 15  # Changed back to 15 to match the saved model
     model = FraudDetectionModel(input_size)
     if os.path.exists(MODEL_PATH):
-        state_dict = torch.load(MODEL_PATH, map_location=torch.device('cpu'))
-        logger.info(f"Model state dict keys: {state_dict.keys()}")
-        model.load_state_dict(state_dict)
-        model.eval()
-        logger.info("Model loaded successfully!")
+        try:
+            state_dict = torch.load(MODEL_PATH, map_location=torch.device('cpu'))
+            logger.info(f"Model state dict keys: {state_dict.keys()}")
+            model.load_state_dict(state_dict)
+            model.eval()
+            logger.info("Model loaded successfully!")
+        except Exception as e:
+            logger.error(f"Error loading model state dict: {str(e)}")
+            model = None
     else:
         logger.error(f"Model file not found at: {MODEL_PATH}")
+        logger.info("Please place the fraud_detection_model.pth file in the backend directory")
         model = None
 except Exception as e:
-    logger.error(f"Error loading model: {str(e)}")
+    logger.error(f"Error initializing model: {str(e)}")
     model = None
 
 # Prediction endpoint
