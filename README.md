@@ -1,6 +1,6 @@
 <!-- Project Banner -->
 <p align="center">
-  
+   <img src="https://imgur.com/8Km9tLL.png" alt="Fraud Detection Banner" width="700"/>
 </p>
 
 # 🛡️ Advanced Fraud Detection System &nbsp; <img src="https://img.shields.io/badge/Secure-Platform-green?style=flat-square&logo=security" alt="secure"/>
