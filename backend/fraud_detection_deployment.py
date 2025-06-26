@@ -69,6 +69,8 @@ class FraudScorer:
             'user_behavior': max(features[12:15])
         }
         
+        logger.info(f"Risk factors: {risk_factors}")  # Add logging for debugging
+
         score = sum(risk_factors[k] * self.risk_weights[k] for k in self.risk_weights) * 100
         return min(100, max(0, score))
 
@@ -105,11 +107,7 @@ fraud_scorer = FraudScorer()
 # Add CORS middleware to allow requests from the frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://192.168.31.86:3000"
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
